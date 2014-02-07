@@ -31,13 +31,16 @@ extern NSString * const NMCustomLabelStyleBoldKey;
 @property (nonatomic, copy) NSString *fontName;
 @property (nonatomic) CGFloat fontSize;
 @property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIColor *highlightedTextColor;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic) CGFloat imageVerticalOffset;
 
 @property (nonatomic, readonly) CTFontRef fontRef;
 @property (nonatomic, readonly) CGColorRef colorRef;
+@property (nonatomic, readonly) CGColorRef highlightedColorRef;
 
 +(id)styleWithFont:(UIFont *)font color:(UIColor *)color;
++(id)styleWithFont:(UIFont *)font color:(UIColor *)color highlightColor:(UIColor *)highlightColor;
 +(id)styleWithImage:(UIImage *)image verticalOffset:(CGFloat)verticalOffset;
 +(id)styleWithImage:(UIImage *)image;
 

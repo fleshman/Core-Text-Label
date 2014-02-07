@@ -278,7 +278,7 @@ static NSCharacterSet *alphaNumericCharacterSet;
 	NMCustomLabelStyle *defaultStyle = [self defaultStyle];
 
 	//set default color
-	CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTForegroundColorAttributeName, defaultStyle.colorRef);
+	CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTForegroundColorAttributeName, (self.isHighlighted?defaultStyle.highlightedColorRef:defaultStyle.colorRef));
 	
 	//set default font
 	CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTFontAttributeName, defaultStyle.fontRef);
@@ -319,6 +319,7 @@ static NSCharacterSet *alphaNumericCharacterSet;
 	
 		CTFontRef font=nil;
 		CGColorRef color=nil;
+        CGColorRef highlightedColor=nil;
 		UIImage *image=nil;
 		CGFloat imageVerticalOffset=0;
 		if(match.numberOfRanges > 1){
@@ -334,6 +335,7 @@ static NSCharacterSet *alphaNumericCharacterSet;
 				if(style){
 					font = style.fontRef;
 					color = style.colorRef;
+                    highlightedColor = style.highlightedColorRef;
 					image = style.image;
 					imageVerticalOffset = style.imageVerticalOffset;
 				}
@@ -347,7 +349,7 @@ static NSCharacterSet *alphaNumericCharacterSet;
 		totalTagLength += thisTagLength;
 		
 		if(font && color){
-			NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)font, kCTFontAttributeName, color, kCTForegroundColorAttributeName, nil];
+			NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)font, kCTFontAttributeName, (self.isHighlighted&&highlightedColor?highlightedColor:color), kCTForegroundColorAttributeName, nil];
 			CFAttributedStringSetAttributes(attrString, CFRangeMake(markupRange.location, markupRange.length), (__bridge CFDictionaryRef)attributes, NO);
 		}
 		if(image){
@@ -794,5 +796,9 @@ static NSCharacterSet *alphaNumericCharacterSet;
 	}
 }
 
+-(void)setHighlighted:(BOOL)highlighted{
+    attrString = nil;
+    [super setHighlighted:highlighted];
+}
 
 @end

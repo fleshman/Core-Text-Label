@@ -27,8 +27,14 @@ NSString * const NMCustomLabelStyleBoldKey = @"nm-bold-style";
 
 @implementation NMCustomLabelStyle
 
-@synthesize fontName, fontSize, textColor, image, imageVerticalOffset;
-@synthesize fontRef, colorRef;
+@synthesize fontName, fontSize, textColor, highlightedTextColor, image, imageVerticalOffset;
+@synthesize fontRef, colorRef, highlightedColorRef;
+
++(id)styleWithFont:(UIFont *)font color:(UIColor *)color highlightColor:(UIColor *)highlightColor{
+    NMCustomLabelStyle *style = [NMCustomLabelStyle styleWithFont:font color:color];
+	style.highlightedTextColor = highlightColor;
+	return style;
+}
 
 +(id)styleWithFont:(UIFont *)font color:(UIColor *)color{
 	NMCustomLabelStyle *style = [NMCustomLabelStyle new];
@@ -75,6 +81,9 @@ NSString * const NMCustomLabelStyleBoldKey = @"nm-bold-style";
 -(void)setTextColor:(UIColor *)_textColor{
 	textColor = _textColor;
 }
+-(void)setHighlightedTextColor:(UIColor *)_highlightedTextColor{
+    highlightedTextColor = _highlightedTextColor;
+}
 -(void)setImage:(UIImage *)_image{
 	image= _image;
 }
@@ -98,6 +107,12 @@ NSString * const NMCustomLabelStyleBoldKey = @"nm-bold-style";
 		return [[UIColor blackColor] CGColor];
 	}
 }
-
+-(CGColorRef)highlightedColorRef{
+	if(highlightedTextColor){
+		return [highlightedTextColor CGColor];
+	}else{
+		return [[UIColor whiteColor] CGColor];
+	}
+}
 
 @end
